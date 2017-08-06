@@ -1,4 +1,5 @@
 let photo = document.getElementsByClassName("photo")[0],
+    photoContainer = document.getElementsByClassName("photo-container")[0],
     mag = null,
     zoom = null;
 
@@ -19,12 +20,12 @@ let removeMagnifier = function() {
 let createZoomedPhoto = function() {
     zoom = document.createElement("div");
     zoom.classList.add("zoom");
-    document.body.appendChild(zoom);
+    photoContainer.appendChild(zoom);
 };
 
 let removeZoomedPhoto = function() {
     if (zoom) {
-        document.body.removeChild(zoom);
+        photoContainer.removeChild(zoom);
         zoom = null;
     }
 };
@@ -43,9 +44,10 @@ let onMouseMove = function(e) {
     let photoBounding = photo.getBoundingClientRect(),
         x = e.clientX - photoBounding.left,
         y = e.clientY - photoBounding.top,
-        photoSize = parseInt(window.getComputedStyle(photo).height);
+        photoSize = parseInt(window.getComputedStyle(photo).height),
         magSize = parseInt(window.getComputedStyle(mag).height),
-        MAX_POSITION = photoSize - magSize;
+        MAX_POSITION = photoSize - magSize,
+        transformCSSValues;
 
     x -= magSize / 2;
     y -= magSize / 2;
@@ -66,7 +68,7 @@ let onMouseMove = function(e) {
         y = 0;
     }
 
-    let transformCSSValues = "translate(" + x + "px," + y + "px)";
+    transformCSSValues = "translate(" + x + "px," + y + "px)";
     mag.style.transform = transformCSSValues;
     zoom.style.backgroundPosition = -x * 2 + "px " + -y * 2 + "px";
 };
